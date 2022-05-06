@@ -9,12 +9,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path= "/" element= {<AuthLayout/>}>
-          <Route index element= {<Login/>} /> 
-          <Route path= "registrar" index element= {<Registrar/>} /> 
-          <Route path= "olvide-password" index element= {<OlvidePassword/>} /> 
-          <Route path= "olvide-password/:token" index element= {<NuevoPassword/>} />
-          <Route path= "confirmar/:id" index element= {<ConfirmarCuenta/>} /> 
+        <Route path="/" element={<AuthLayout />}>
+          <Route index element={<Login />} />
+          <Route path="registrar" index element={<Registrar />} />
+          <Route path="olvide-password" index element={<OlvidePassword />} />
+          <Route path="olvide-password/:token" index element={<NuevoPassword />} />
+          <Route path="confirmar/:id" index element={<ConfirmarCuenta />} />
         </Route>
       </Routes>
     </BrowserRouter>
