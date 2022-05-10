@@ -9,6 +9,7 @@ import ConfirmarCuenta from "./paginas/ConfirmarCuenta";
 import { AuthProvider } from "./context/AuthProvider";
 import { RutaProtegida } from "./layouts/RutaProtegida";
 import { Proyectos } from "./paginas/Proyectos";
+import NuevoProyecto from "./paginas/NuevoProyecto";
 
 function App() {
   return (
@@ -21,11 +22,14 @@ function App() {
             <Route path="olvide-password" index element={<OlvidePassword />} />
             <Route path="olvide-password/:token" index element={<NuevoPassword />} />
             <Route path="confirmar/:id" index element={<ConfirmarCuenta />} />
+           
           </Route>
 
           <Route path="/proyectos" element={<RutaProtegida />}>
             <Route index element={<Proyectos />} />
+            <Route path="Crear-proyecto" element={<NuevoProyecto/>}/>
           </Route>
+    
         </Routes>
       </AuthProvider>
     </BrowserRouter>
