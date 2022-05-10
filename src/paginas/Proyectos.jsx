@@ -1,6 +1,10 @@
+import useProyectos from "../hooks/useProyectos"
 
 
 export const Proyectos = () => {
+
+  const {Proyectos}= useProyectos()
+  
   return (
     <>
     
