@@ -12,7 +12,7 @@ export const Proyecto = () => {
 
   useEffect(() => {
     obtenerProyecto(id)
-  } , [])
+  }, [])
 
   return (
     cargando ? 'Cargando...' : (
