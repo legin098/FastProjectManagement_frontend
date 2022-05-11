@@ -12,6 +12,7 @@ import { ProyectosProvider } from "./context/ProyectosProvider";
 import { RutaProtegida } from "./layouts/RutaProtegida";
 import { Proyectos } from "./paginas/Proyectos";
 import NuevoProyecto from "./paginas/NuevoProyecto";
+import { Proyecto } from "./paginas/Proyecto";
 
 function App() {
   return (
@@ -22,22 +23,15 @@ function App() {
             <Route path="/" element={<AuthLayout />}>
               <Route index element={<Login />} />
               <Route path="registrar" index element={<Registrar />} />
-              <Route
-                path="olvide-password"
-                index
-                element={<OlvidePassword />}
-              />
-              <Route
-                path="olvide-password/:token"
-                index
-                element={<NuevoPassword />}
-              />
+              <Route path="olvide-password" index element={<OlvidePassword />} />
+              <Route path="olvide-password/:token" index element={<NuevoPassword />} />
               <Route path="confirmar/:id" index element={<ConfirmarCuenta />} />
             </Route>
 
             <Route path="/proyectos" element={<RutaProtegida />}>
               <Route index element={<Proyectos />} />
-              <Route path="Crear-proyecto" element={<NuevoProyecto />} />
+              <Route path="crear-proyecto" element={<NuevoProyecto />} />
+              <Route path=":id" element={<Proyecto />} />
             </Route>
           </Routes>
         </ProyectosProvider>
