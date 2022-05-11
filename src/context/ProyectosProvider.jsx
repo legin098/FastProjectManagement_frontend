@@ -42,6 +42,45 @@ const ProyectosProvider = ({ children }) => {
   };
 
   const submitProyecto = async (proyecto) => {
+    if (proyecto.id) {
+      await editarProyecto(proyecto);
+    } else {
+      await nuevoProyecto(proyecto);
+    }
+  };
+
+  const editarProyecto = async (proyecto) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await clienteAxios.put(`/proyectos/${proyecto.id}`, proyecto, config);
+
+      const proyectosActualizados = proyectos.map((proyectoState) =>
+        proyectoState._id === data._id ? data : proyectoState
+      );
+      setProyectos(proyectosActualizados);
+
+      setAlerta({
+        msg: "Proyecto actualizado correctamente",
+        error: false,
+      });
+
+      setTimeout(() => {
+        setAlerta({});
+        navigate("/proyectos");
+      }, 3000);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const nuevoProyecto = async (proyecto) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
