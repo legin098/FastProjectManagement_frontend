@@ -4,6 +4,8 @@ import useProyectos from "../hooks/useProyectos"
 export const Proyectos = () => {
 
   const { proyectos }= useProyectos()
+
+  console.log(proyectos)
   
   return (
     <>

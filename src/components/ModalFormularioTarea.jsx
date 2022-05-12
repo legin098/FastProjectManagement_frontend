@@ -4,33 +4,36 @@ import useProyectos from "../hooks/useProyectos";
 import Alerta from "./Alerta";
 import { useParams } from "react-router-dom";
 
-const PRIORIDAD =['Baja','Media','Alta']
+const PRIORIDAD = ["Baja", "Media", "Alta"];
 
 const ModalFormularioTarea = () => {
+  const [nombre, setNombre] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+  const [prioridad, setPrioridad] = useState("");
+  const [fechaEntrega, setFechaEntrega] = useState("");
 
-  const [nombre,setNombre]= useState('')
-  const [descripcion, setDescripcion]= useState('')
-  const [prioridad, setPrioridad]=useState('')
-  const [fechaEntrega, setFechaEntrega]=useState('')
+  const params = useParams();
 
-  const params = useParams()
-  
+  const { modalFormularioTarea, handleModalTarea, mostrarAlerta, alerta, submitTarea } = useProyectos();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const { modalFormularioTarea, handleModalTarea,mostrarAlerta,alerta,submitTarea } = useProyectos();
-  const handleSubmit = e => {
-        e.preventDefault();
+    if ([nombre, descripcion, fechaEntrega, prioridad].includes("")) {
+      mostrarAlerta({
+        msg: "Todos los campos son obligatorios",
+        error: true,
+      });
+      return;
+    }
+    await submitTarea({ nombre, descripcion, fechaEntrega, prioridad, proyecto: params.id });
 
-        if([nombre, descripcion,fechaEntrega,prioridad].includes('')){
-            mostrarAlerta({
-              msg:'Todos los campos son obligatorios',
-              error:true
-            })
-            return
-        }
-        submitTarea({nombre,descripcion,fechaEntrega,prioridad,proyecto:params.id})
-  }
+    setNombre("");
+    setDescripcion("");
+    setPrioridad("");
+    setFechaEntrega("");
+  };
 
-  const {msg}=alerta
+  const { msg } = alerta;
 
   return (
     <Transition.Root show={modalFormularioTarea} as={Fragment}>
@@ -88,74 +91,67 @@ const ModalFormularioTarea = () => {
 
                   {msg && <Alerta alerta={alerta} />}
 
-                  <form onSubmit={handleSubmit}
-                        className='my-10'>
-
-                    <div className='mb-5'>
-                      <label className='text-gray-700 uppercase font-bold text-sm'
-                              htmlFor='nombre'>
-                            Nombre Tarea
+                  <form onSubmit={handleSubmit} className="my-10">
+                    <div className="mb-5">
+                      <label className="text-gray-700 uppercase font-bold text-sm" htmlFor="nombre">
+                        Nombre Tarea
                       </label>
                       <input
-                            type="text"
-                            id="nombre"
-                            placeholder="nombre de la tarea"
-                            className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                            value={nombre}
-                            onChange={e => setNombre(e.target.value)}
+                        type="text"
+                        id="nombre"
+                        placeholder="nombre de la tarea"
+                        className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                        value={nombre}
+                        onChange={(e) => setNombre(e.target.value)}
                       />
-
                     </div>
 
-                    <div className='mb-5'>
-                      <label className='text-gray-700 uppercase font-bold text-sm'
-                              htmlFor='descripcion'>
-                            Descripcion Tarea
+                    <div className="mb-5">
+                      <label className="text-gray-700 uppercase font-bold text-sm" htmlFor="descripcion">
+                        Descripcion Tarea
                       </label>
                       <textarea
-                            id="descripcion"
-                            placeholder="Descripción de la tarea"
-                            className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                            value={descripcion}
-                            onChange={e => setDescripcion(e.target.value)}
+                        id="descripcion"
+                        placeholder="Descripción de la tarea"
+                        className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                        value={descripcion}
+                        onChange={(e) => setDescripcion(e.target.value)}
                       />
-
                     </div>
-                    <div className='mb-5'>
-                      <label className='text-gray-700 uppercase font-bold text-sm'
-                              htmlFor='fecha-entrega'>
-                            Fecha Entrega
+                    <div className="mb-5">
+                      <label className="text-gray-700 uppercase font-bold text-sm" htmlFor="fecha-entrega">
+                        Fecha Entrega
                       </label>
                       <input
-                            type="date"
-                            id="fecha-entrega"
-                            className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                            value={fechaEntrega}
-                            onChange={e => setFechaEntrega(e.target.value)}
+                        type="date"
+                        id="fecha-entrega"
+                        className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                        value={fechaEntrega}
+                        onChange={(e) => setFechaEntrega(e.target.value)}
                       />
-
                     </div>
 
-                    <div className='mb-5'>
-                      <label className='text-gray-700 uppercase font-bold text-sm'
-                              htmlFor='prioridad'>
-                            Prioridad
+                    <div className="mb-5">
+                      <label className="text-gray-700 uppercase font-bold text-sm" htmlFor="prioridad">
+                        Prioridad
                       </label>
                       <select
-                            id="prioridad"
-                            className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                            value={prioridad}
-                            onChange={e => setPrioridad(e.target.value)}
+                        id="prioridad"
+                        className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                        value={prioridad}
+                        onChange={(e) => setPrioridad(e.target.value)}
                       >
                         <option value="">-- Seleccionar --</option>
-                        {PRIORIDAD.map(opcion =>(<option key={opcion}>{opcion}</option>))}
+                        {PRIORIDAD.map((opcion) => (
+                          <option key={opcion}>{opcion}</option>
+                        ))}
                       </select>
-                     </div>
-                     <input
-                          type="submit"
-                          className="bg-sky-600 hover:bg-sky-700 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded text-sm"
-                          value="Crear tarea"
-                     />
+                    </div>
+                    <input
+                      type="submit"
+                      className="bg-sky-600 hover:bg-sky-700 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded text-sm"
+                      value="Crear tarea"
+                    />
                   </form>
                 </div>
               </div>
