@@ -9,6 +9,7 @@ const ProyectosProvider = ({ children }) => {
   const [alerta, setAlerta] = useState({});
   const [proyecto, setProyecto] = useState({});
   const [cargando, setCargando] = useState(false);
+  const [modalFormularioTarea, setModalFormularioTarea] = useState(false);
 
   const navigate = useNavigate();
 
@@ -129,8 +130,8 @@ const ProyectosProvider = ({ children }) => {
     }
   };
 
-  const eliminarProyecto = async id => {
-    try{
+  const eliminarProyecto = async (id) => {
+    try {
       const token = localStorage.getItem("token");
       if (!token) return;
       const config = {
@@ -142,21 +143,24 @@ const ProyectosProvider = ({ children }) => {
       const { data } = await clienteAxios.delete(`/proyectos/${id}`, config);
       setAlerta({
         msg: data.msg,
-        error: false
-      })
+        error: false,
+      });
       //sincoronzar el state
-      const proyectosActualizados = proyectos.filter(proyectoState => proyectoState._id !== id)
-      setProyectos(proyectosActualizados)
-      
+      const proyectosActualizados = proyectos.filter((proyectoState) => proyectoState._id !== id);
+      setProyectos(proyectosActualizados);
+
       setTimeout(() => {
         setAlerta({});
         navigate("/proyectos");
       }, 3000);
-
-    }catch (error){
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
+
+  const handleModalTarea = () => {
+    setModalFormularioTarea(!modalFormularioTarea);
+  };
 
   return (
     <ProyectosContext.Provider
@@ -168,7 +172,9 @@ const ProyectosProvider = ({ children }) => {
         obtenerProyecto,
         proyecto,
         cargando,
-        eliminarProyecto
+        eliminarProyecto,
+        modalFormularioTarea,
+        handleModalTarea,
       }}
     >
       {children}
