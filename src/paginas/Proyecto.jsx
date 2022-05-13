@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import Alerta from "../components/Alerta";
+import ModalEliminarTarea from "../components/ModalEliminarTarea";
 import ModalFormularioTarea from "../components/ModalFormularioTarea";
 import { Tarea } from "../components/Tarea";
 import useProyectos from "../hooks/useProyectos";
 
 export const Proyecto = () => {
   const { id } = useParams();
-  const { obtenerProyecto, proyecto, cargando, handleModalTarea } = useProyectos();
+  const { obtenerProyecto, proyecto, cargando, handleModalTarea, alerta } = useProyectos();
 
   useEffect(() => {
     obtenerProyecto(id);
@@ -15,6 +17,8 @@ export const Proyecto = () => {
   const { nombre } = proyecto;
 
   if (cargando) return "Cargando...";
+
+  const { msg } = alerta;
 
   return (
     <>
@@ -55,17 +59,24 @@ export const Proyecto = () => {
         Nueva tarea
       </button>
 
-      <p className='font-bold text-xl mt-10'>Tareas del proyecto</p>
+      <p className="font-bold text-xl mt-10">Tareas del proyecto</p>
 
-      <div className="bg-white shadow mt-10 rounded-lg">
-        {proyecto.tareas?.length ?
-          proyecto.tareas?.map((tarea) => (
-            <Tarea key={tarea._id} tarea={tarea} />
-          )) :
-          <p className='text-center my-5 p-10'>No hay tareas en este proyecto</p>}
+      <div className='flex justify-center'>
+        <div className="w-full md:w-1/3 lg:w-1/4">
+          {msg && <Alerta alerta={alerta} />}
+        </div>
       </div>
 
-      <ModalFormularioTarea/>
+      <div className="bg-white shadow mt-10 rounded-lg">
+        {proyecto.tareas?.length ? (
+          proyecto.tareas?.map((tarea) => <Tarea key={tarea._id} tarea={tarea} />)
+        ) : (
+          <p className="text-center my-5 p-10">No hay tareas en este proyecto</p>
+        )}
+      </div>
+
+      <ModalFormularioTarea />
+      <ModalEliminarTarea />
     </>
   );
 };
