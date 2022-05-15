@@ -12,6 +12,7 @@ const ProyectosProvider = ({ children }) => {
   const [modalFormularioTarea, setModalFormularioTarea] = useState(false);
   const [tarea, setTarea] = useState({});
   const [modalEliminarTarea, setModalEliminarTarea] = useState(false);
+  const [colaborador, setColaborador] = useState({});
 
   const navigate = useNavigate();
 
@@ -126,7 +127,10 @@ const ProyectosProvider = ({ children }) => {
       const { data } = await clienteAxios.get(`/proyectos/${id}`, config);
       setProyecto(data);
     } catch (e) {
-      console.log(e);
+      setAlerta({
+        msg: e.response.data.msg,
+        error: true,
+      });
     } finally {
       setCargando(false);
     }
@@ -263,6 +267,58 @@ const ProyectosProvider = ({ children }) => {
     }
   };
 
+  const submitColaborador = async (email) => {
+    setCargando(true);
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await clienteAxios.post(`/proyectos/colaboradores`, { email }, config);
+      setColaborador(data);
+      setAlerta({});
+    } catch (e) {
+      setAlerta({
+        msg: e.response.data.msg,
+        error: true,
+      });
+    } finally {
+      setCargando(false);
+    }
+  };
+
+  const agregarColaborador = async (email) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await clienteAxios.post(`/proyectos/colaboradores/${proyecto._id}`, email, config);
+      setAlerta({
+        msg: data.msg,
+        error: false,
+      });
+      setColaborador({});
+      setAlerta({});
+    } catch (e) {
+      setAlerta({
+        msg: e.response.data.msg,
+        error: true,
+      });
+    }
+  };
+
   return (
     <ProyectosContext.Provider
       value={{
@@ -282,6 +338,9 @@ const ProyectosProvider = ({ children }) => {
         modalEliminarTarea,
         handleModalEliminarTarea,
         eliminarTarea,
+        submitColaborador,
+        colaborador,
+        agregarColaborador,
       }}
     >
       {children}
