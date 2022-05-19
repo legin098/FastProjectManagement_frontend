@@ -13,7 +13,6 @@ export const Proyecto = () => {
   const { id } = useParams();
   const { obtenerProyecto, proyecto, cargando, handleModalTarea, alerta } = useProyectos();
   const admin = useAdmin();
-  console.log(admin);
 
   useEffect(() => {
     obtenerProyecto(id);
