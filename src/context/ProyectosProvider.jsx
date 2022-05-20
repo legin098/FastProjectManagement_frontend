@@ -14,6 +14,7 @@ const ProyectosProvider = ({ children }) => {
   const [modalEliminarTarea, setModalEliminarTarea] = useState(false);
   const [colaborador, setColaborador] = useState({});
   const [modalEliminarColaborador, setModalEliminarColaborador] = useState(false);
+  const [buscador, setBuscador] = useState(false);
 
   const navigate = useNavigate();
 
@@ -129,10 +130,14 @@ const ProyectosProvider = ({ children }) => {
       setProyecto(data);
       setAlerta({});
     } catch (e) {
+      navigate("/proyectos");
       setAlerta({
         msg: e.response.data.msg,
         error: true,
       });
+      setTimeout(() => {
+        setAlerta({});
+      }, 3000);
     } finally {
       setCargando(false);
     }
@@ -390,6 +395,10 @@ const ProyectosProvider = ({ children }) => {
     }
   };
 
+  const handleBuscador = (e) => {
+    setBuscador(!buscador);
+  }
+
   return (
     <ProyectosContext.Provider
       value={{
@@ -416,6 +425,8 @@ const ProyectosProvider = ({ children }) => {
         modalEliminarColaborador,
         eliminarColaborador,
         completarTarea,
+        buscador,
+        handleBuscador,
       }}
     >
       {children}

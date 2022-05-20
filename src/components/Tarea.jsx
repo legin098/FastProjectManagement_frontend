@@ -9,13 +9,14 @@ export const Tarea = ({ tarea }) => {
 
   return (
     <div className="border-b p-5 flex justify-between items-center">
-      <div>
+      <div className="flex flex-col items-start">
         <p className="text-xl mb-2">{nombre}</p>
         <p className="text-sm text-gray-500 uppercase mb-2">{descripcion}</p>
         <p className="text-sm mb-2">{formatearFecha(fechaEntrega)}</p>
         <p className="text-gray-600 mb-2">Prioridad: {prioridad}</p>
+        {estado && <p className='text-xs bg-green-600 uppercase p-1 rounded-lg text-white'>Completada por: {tarea.completado.nombre}</p>}
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-col lg:flex-row gap-2">
         {admin && (
           <button
             onClick={() => handleModalEditarTarea(tarea)}
