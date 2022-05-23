@@ -1,6 +1,7 @@
 import Alerta from "../components/Alerta";
 import { PreviewProyecto } from "../components/PreviewProyecto";
 import useProyectos from "../hooks/useProyectos";
+import { useEffect } from "react";
 
 export const Proyectos = () => {
   const { proyectos, alerta } = useProyectos();
