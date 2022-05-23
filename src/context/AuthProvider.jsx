@@ -23,8 +23,8 @@ const AuthProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-        }
-      }
+        },
+      };
 
       try {
         const { data } = await clienteAxios.get("/usuarios/perfil", config);
@@ -35,17 +35,21 @@ const AuthProvider = ({ children }) => {
       } finally {
         setCargando(false);
       }
-
     };
     autenticarUsuario();
   }, []);
+
+  const cerrarSesionAuth = () => {
+    setAuth({});
+  };
 
   return (
     <AuthContext.Provider
       value={{
         setAuth,
         auth,
-        cargando
+        cargando,
+        cerrarSesionAuth,
       }}
     >
       {children}
